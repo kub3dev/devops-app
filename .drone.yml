@@ -17,13 +17,18 @@ trigger:
 steps:
 - name: build-push
   image: docker:dind
+  environment:
+    DOCKER_HUB_USERNAME: 
+      from_secret: DOCKER_HUB_USERNAME
+    DOCKER_HUB_PASSWORD: 
+      from_secret: DOCKER_HUB_PASSWORD
   volumes:
   - name: dockersock
     path: /var/run  
   privileged: true
   commands:
   - sleep 5 ## give docker enough time to start
-  - docker login -u ${DOCKER_HUB_USERNAME}  -p ${DOCKER_HUB_PASSWORD}  #ou qualquer registry
+  - docker login -u $DOCKER_HUB_USERNAME  -p $DOCKER_HUB_PASSWORD #ou qualquer registry
   - docker build  -t {{ .repo.name }}:${DRONE_COMMIT_SHA:0:7} -f ./.nixpacks/Dockerfile .
   - docker push {{ .repo.name }}:${DRONE_COMMIT_SHA:0:7}
 
@@ -48,3 +53,4 @@ services:
 volumes:
 - name: dockersock
   temp: {}
+  
