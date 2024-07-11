@@ -28,13 +28,13 @@ steps:
   - docker push {{ .repo.name }}:${DRONE_COMMIT_SHA:0:7}
 
 ######################################################   Delivery
-# - name: delivery
-#   image: uzieljr/plugin-drone:5.0
-#   commands:
-#   - git clone git@github.com:uzieljr/deploy-applications.git
-#   - cd deploy-applications 
-#   - sed -E -i.bak 's%(uzieljr/poc-site:).*%uzieljr/poc-site:${DRONE_COMMIT_SHA:0:7}%' site-helm/templates/uzi-poc-site-deployment.yml
-#   - git add . && git commit -m "Change image site-poc to uzieljr/poc-site:${DRONE_COMMIT_SHA:0:7}" && git push
+- name: delivery
+  image: kub3dev/drone-deploy-version:1.0
+  commands:
+  - git clone git@github.com:kub3dev/devops.git
+  - cd deploy-applications 
+  - sed -E -i.bak 's%({{ .repo.name }}:).*%{{ .repo.name }}:${DRONE_COMMIT_SHA:0:7}%' apps/production/devops-app/deployment.yaml
+  - git add . && git commit -m "Change image site-poc to {{ .repo.name }}:${DRONE_COMMIT_SHA:0:7}" && git push
 
 
 ########################################################   Services   
