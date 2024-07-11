@@ -32,6 +32,18 @@ steps:
   - docker build -t $DRONE_REPO:$DRONE_BUILD_NUMBER -t $DRONE_REPO:latest -f ./.nixpacks/Dockerfile .
   - docker push --all-tags $DRONE_REPO
 
+- name: git-push
+  image: appleboy/drone-git-push
+  settings:
+    branch: main
+    remote: git@github.com:kub3dev/devops.git
+    force: false
+    commit: true
+    commit_message: "Deploying version $DRONE_BUILD_NUMBER"
+    commands:
+    - cd apps/production/$DRONE_REPO_NAME
+    - sed -E -i.bak 's%($DRONE_REPO:).*%$DRONE_REPO:$DRONE_BUILD_NUMBER%' deployment.yaml
+
 ######################################################   Delivery
 - name: delivery
   image: kub3dev/drone-deploy-version:1.0
@@ -40,7 +52,6 @@ steps:
   - cd apps/production/$DRONE_REPO_NAME
   - sed -E -i.bak 's%($DRONE_REPO:).*%$DRONE_REPO:$DRONE_BUILD_NUMBER%' deployment.yaml
   - git add . && git commit -m "Change image site-poc to $DRONE_REPO:$DRONE_BUILD_NUMBER" && git push
-
 
 ########################################################   Services   
 services:
