@@ -29,7 +29,7 @@ steps:
   commands:
   - sleep 5 ## give docker enough time to start
   - docker login -u $DOCKER_HUB_USERNAME  -p $DOCKER_HUB_PASSWORD #ou qualquer registry
-  - docker build  -t $DRONE_REPO:$DRONE_BUILD_NUMBER -f ./.nixpacks/Dockerfile .
+  - docker build  -t $DRONE_REPO:$DRONE_BUILD_NUMBER $DRONE_REPO:latest -f ./.nixpacks/Dockerfile .
   - docker push $DRONE_REPO:$DRONE_BUILD_NUMBER
   - docker push $DRONE_REPO:latest
 
