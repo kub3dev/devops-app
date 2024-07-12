@@ -40,14 +40,14 @@ steps:
     remote: git@github.com:kub3dev/devops.git
     ssh_key: 
       from_secret: GITHUB_SSH_KEY
-    force: false
+    force: true
     commit: true
     commit_message: "Deploying version $DRONE_BUILD_NUMBER"
-    # commands:
-    # - git pull
-    # - cd apps/production/$DRONE_REPO_NAME
-    # - sed -E -i.bak 's%($DRONE_REPO:).*%$DRONE_REPO:$DRONE_BUILD_NUMBER%' deployment.yaml
-    # - git add .
+    commands:
+    - git pull
+    - cd apps/production/$DRONE_REPO_NAME
+    - sed -E -i.bak 's%($DRONE_REPO:).*%$DRONE_REPO:$DRONE_BUILD_NUMBER%' deployment.yaml
+    - git add .
 
 ######################################################   Delivery
 - name: delivery
