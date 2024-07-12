@@ -34,6 +34,7 @@ steps:
 
 - name: git-push
   image: appleboy/drone-git-push
+  pull: if-not-exists
   settings:
     branch: main
     remote: git@github.com:kub3dev/devops.git
@@ -43,6 +44,7 @@ steps:
     commit: true
     commit_message: "Deploying version $DRONE_BUILD_NUMBER"
     commands:
+    - git pull
     - cd apps/production/$DRONE_REPO_NAME
     - sed -E -i.bak 's%($DRONE_REPO:).*%$DRONE_REPO:$DRONE_BUILD_NUMBER%' deployment.yaml
     - git add .
