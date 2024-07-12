@@ -37,7 +37,8 @@ steps:
   settings:
     branch: main
     remote: git@github.com:kub3dev/devops.git
-    ssh_key: $GITHUB_SSH_KEY
+    ssh_key: 
+      from_secret: $GITHUB_SSH_KEY
     force: false
     commit: true
     commit_message: "Deploying version $DRONE_BUILD_NUMBER"
