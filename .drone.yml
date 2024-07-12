@@ -43,11 +43,11 @@ steps:
     force: false
     commit: true
     commit_message: "Deploying version $DRONE_BUILD_NUMBER"
-    commands:
-    - git pull
-    - cd apps/production/$DRONE_REPO_NAME
-    - sed -E -i.bak 's%($DRONE_REPO:).*%$DRONE_REPO:$DRONE_BUILD_NUMBER%' deployment.yaml
-    - git add .
+    # commands:
+    # - git pull
+    # - cd apps/production/$DRONE_REPO_NAME
+    # - sed -E -i.bak 's%($DRONE_REPO:).*%$DRONE_REPO:$DRONE_BUILD_NUMBER%' deployment.yaml
+    # - git add .
 
 ######################################################   Delivery
 - name: delivery
